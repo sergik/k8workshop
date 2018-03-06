@@ -10,7 +10,9 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM microsoft/aspnetcore:2.0
+FROM microsoft/dotnet:2.0-runtime
 WORKDIR /app
 COPY --from=build-env /app/out .
+ENV ASPNETCORE_URLS="http://*:5000"
+EXPOSE 5000
 ENTRYPOINT ["dotnet", "k8workshop.dll"]
